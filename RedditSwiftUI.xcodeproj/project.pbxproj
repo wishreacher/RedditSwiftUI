@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		57C19C4B2DBA860F00FA9302 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 57C19C4A2DBA860F00FA9302 /* SDWebImage */; };
+		57C19C4D2DBA860F00FA9302 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 57C19C4C2DBA860F00FA9302 /* SDWebImageMapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		575A9DFE2DA84969000E029F /* RedditSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RedditSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +28,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57C19C4D2DBA860F00FA9302 /* SDWebImageMapKit in Frameworks */,
+				57C19C4B2DBA860F00FA9302 /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +72,8 @@
 			);
 			name = RedditSwiftUI;
 			packageProductDependencies = (
+				57C19C4A2DBA860F00FA9302 /* SDWebImage */,
+				57C19C4C2DBA860F00FA9302 /* SDWebImageMapKit */,
 			);
 			productName = RedditSwiftUI;
 			productReference = 575A9DFE2DA84969000E029F /* RedditSwiftUI.app */;
@@ -94,6 +103,9 @@
 			);
 			mainGroup = 575A9DF52DA84969000E029F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				57C19C492DBA860F00FA9302 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 575A9DFF2DA84969000E029F /* Products */;
 			projectDirPath = "";
@@ -324,6 +336,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		57C19C492DBA860F00FA9302 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.21.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		57C19C4A2DBA860F00FA9302 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57C19C492DBA860F00FA9302 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		57C19C4C2DBA860F00FA9302 /* SDWebImageMapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57C19C492DBA860F00FA9302 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImageMapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 575A9DF62DA84969000E029F /* Project object */;
 }

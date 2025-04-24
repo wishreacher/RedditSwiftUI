@@ -11,7 +11,7 @@ struct User: Codable {
     let name: String
 }
 
-struct Post: Identifiable, Codable {
+struct UserPost: Identifiable, Codable {
     let title: String
     let text: String
     let imagePath: String?

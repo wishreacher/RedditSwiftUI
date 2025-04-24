@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 
 class PostListViewModel: ObservableObject {
-    @Published var posts: [Post] = []
+    @Published var posts: [UserPost] = []
     
     @ViewBuilder
-    func makePostRow(_ post: Post) -> some View {
+    func makePostRow(_ post: UserPost) -> some View {
         VStack(alignment: .leading, spacing: 0){
             HStack(spacing: 5){
                 Text(post.author.name)
@@ -49,7 +49,7 @@ class PostListViewModel: ObservableObject {
     }
     
     @ViewBuilder
-    func loadImage(post: Post) -> some View {
+    func loadImage(post: UserPost) -> some View {
         if let imagePath = post.imagePath,
            let uiImage = UIImage(contentsOfFile: imagePath) {
             Image(uiImage: uiImage)
@@ -59,6 +59,6 @@ class PostListViewModel: ObservableObject {
     }
     
     func refreshPosts() {
-        self.posts = PostService.loadSavedPosts()
+        self.posts = PostService.loadSavedUserPosts()
     }
 }

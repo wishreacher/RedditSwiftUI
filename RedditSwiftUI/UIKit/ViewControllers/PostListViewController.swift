@@ -39,7 +39,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
         savedPostViewEnabled.toggle()
         
         if savedPostViewEnabled {
-            bookmarkedPosts = loadBookmarkedPosts(at: saveLocation)
+            bookmarkedPosts = PostService.loadBookmarkedPosts(at: saveLocation)
             searchField.isHidden = false
             searchField.text = ""
             viewState = .displaySaved
@@ -76,7 +76,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
         super.viewDidLoad()
         
         domainName.title = "r/" + domain
-        bookmarkedPosts = loadBookmarkedPosts(at: saveLocation)
+        bookmarkedPosts = PostService.loadBookmarkedPosts(at: saveLocation)
 
         Task {
             do {
@@ -253,7 +253,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
             }
         }
         
-        saveBookmarkedPosts(bookmarkedPosts, at: saveLocation)
+        PostService.saveBookmarkedPosts(bookmarkedPosts, at: saveLocation)
     }
     
     func markSavedPosts(){

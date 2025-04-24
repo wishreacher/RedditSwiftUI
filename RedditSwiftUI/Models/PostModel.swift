@@ -49,7 +49,6 @@ struct Preview: Codable {
     }
 }
 
-//needs to be codable for saving
 struct Post: Codable {
     let id: String
     let title: String

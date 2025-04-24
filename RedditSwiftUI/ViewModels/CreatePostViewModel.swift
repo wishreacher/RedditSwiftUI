@@ -40,7 +40,7 @@ class CreatePostViewModel: ObservableObject {
                     }
                 }
                 
-                PostService.savePost(title: postTitle, text: postDescription, image: postImage)
+                PostService.saveUserPost(title: postTitle, text: postDescription, image: postImage)
                 
                 await MainActor.run {
                     self.postTitle = ""
