@@ -57,7 +57,7 @@ struct Post: Codable, Identifiable {
     let domain: String
     var saved: Bool
     let authorID: String?
-    let imageHeight: Int?
+    var imageHeight: Int?
     var isLocal: Bool{
         return url == nil
     }
@@ -159,5 +159,10 @@ struct Post: Codable, Identifiable {
         saved = false
         authorID = ""
         imageHeight = 0
+    }
+    
+    
+    mutating func setImageHeight(_ height: CGFloat){
+        self.imageHeight = Int(height)
     }
 }

@@ -67,10 +67,6 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
     let domain = "ios"
     let postAmount = 10
     var isLoading = false
-//    let saveLocation: String = {
-//        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-//        return paths[0].appendingPathComponent("bookmarks.json").path
-//    }()
     let saveLocation = PostService.getPathInDocumentsDirectory(withFileName: "posts")
     
     override func viewDidLoad() {
@@ -173,9 +169,13 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
             }
     }
     
-    //TODO: get rid of magic numbers
-    func getHeightForPost(_ post: Post) -> CGFloat {
-        if post.imageURL == nil {
+    //TODO: This shouldn't be here
+    func getHeightForPost(_ post: Post) -> Double {
+        if post.imagePath != nil {
+            return 250
+        }
+        
+        if post.imageURL == nil && post.imagePath == nil {
             return 145
         } else{
             if let height = post.imageHeight{

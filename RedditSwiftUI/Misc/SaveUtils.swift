@@ -101,76 +101,8 @@ struct PostService {
     static func getPathInDocumentsDirectory(withFileName fileName: String) -> String {
         return getDocumentsDirectory().appendingPathComponent(fileName).path()
     }
-
-//    static func saveUserPost(title: String, text: String, image: UIImage?) {
-//        guard let user = loadUser() else { return }
-//        
-//        let post: UserPost
-//        
-//        if image == nil {
-//            post = UserPost(title: title, text: text, imagePath: nil, author: user)
-//        } else{
-//            let imageName = saveImageToDocumentsDirectory(image: image!)
-//            post = UserPost(title: title, text: text, imagePath: imageName, author: user)
-//        }
-//
-//        var savedPosts: [UserPost] = []
-//        if let savedData = UserDefaults.standard.data(forKey: "savedPosts"),
-//           let decodedPosts = try? JSONDecoder().decode([UserPost].self, from: savedData) {
-//            savedPosts = decodedPosts
-//        }
-//
-//        savedPosts.append(post)
-//
-//        if let encoded = try? JSONEncoder().encode(savedPosts) {
-//            UserDefaults.standard.set(encoded, forKey: "savedPosts")
-//        }
-//    }
     
-//    static func loadSavedUserPosts() -> [UserPost] {
-//        if let savedData = UserDefaults.standard.data(forKey: "savedPosts") {
-//            if let decodedPosts = try? JSONDecoder().decode([UserPost].self, from: savedData) {
-//                return decodedPosts
-//            }
-//        }
-//        
-//        return []
-//    }
-    
-//    static func saveBookmarkedPosts(_ postList: [Post], at location: String) {
-//        var data: Data = Data()
-//        
-//        do{
-//            data = try JSONEncoder().encode(postList)
-//        }
-//        catch{
-//            print("Postlist encoding error")
-//            return
-//        }
-//        
-//        if FileManager.default.fileExists(atPath: location){
-//            do{
-//                try FileManager.default.removeItem(atPath: location)
-//            }
-//            catch{
-//                print("File delition error")
-//            }
-//        }
-//        
-//        FileManager.default.createFile(atPath: location, contents: data)
-//    }
-//
-//    static func loadBookmarkedPosts(at location: String) -> [Post] {
-//        if FileManager.default.fileExists(atPath: location){
-//            do{
-//                let data: Data = try Data(contentsOf: URL(fileURLWithPath: location))
-//                return try JSONDecoder().decode([Post].self, from: data)
-//            }
-//            catch{
-//                print("File reading error")
-//            }
-//        }
-//        return []
-//    }
-
+    static func getHeightForImage(at path: String) -> Double {
+        return Double(loadImageFromPath(getImagePath(for: path))?.size.hashValue ?? 0)
+    }
 }

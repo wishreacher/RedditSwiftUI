@@ -70,7 +70,6 @@ class PostView: UIView {
     private var withImage: Bool = true
     
     func config(with post: Post){
-
         url = post.url
         authorLabel.text = post.author
         timeLabel.text = post.date
@@ -99,15 +98,9 @@ class PostView: UIView {
             let imagePath = documentsDirectory.appendingPathComponent(path).relativePath
             postImageView.image = PostService.loadImageFromPath(imagePath)
             print("loading local image from path: \(imagePath)")
-//            postImageView.image = UIImage(resource: .test)
-            
-            imageWrapperHeightConstraint.constant = 170
-            parentCell?.postHeightConstraint.constant = 130
-            
-            
-            postImageView.contentMode = .scaleAspectFit
-            postImageView.clipsToBounds = true
 
+            imageWrapperHeightConstraint.constant = 150
+            parentCell?.postHeightConstraint.constant = 300
         } else {
             postImageView.sd_setImage(with: post.imageURL)
         }
