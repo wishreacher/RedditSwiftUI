@@ -32,15 +32,24 @@ class CreatePostViewModel: ObservableObject {
         if canPost() {
             Task {
                 var postImage: UIImage? = nil
+                var imagePath: String? = nil
                 
                 if let selectedPhotoItem = selectedPhotoItem {
                     if let data = try? await selectedPhotoItem.loadTransferable(type: Data.self),
                        let uiImage = UIImage(data: data) {
                         postImage = uiImage
                     }
+                    imagePath = PostService.saveImageToDocumentsDirectory(image: postImage!)
                 }
                 
-                PostService.saveUserPost(title: postTitle, text: postDescription, image: postImage)
+                //PostService.saveUserPost(title: postTitle, text: postDescription, image: postImage)
+                
+                //TODO: maybe force unwrap is not a good idea. tho this shouldn't happen if user is empty.
+                //also rewise hardcoded values
+                
+                let userPost = UserPost(title: postTitle, description: postDescription, imagePath: imagePath, author: user!.name, date: "1745766630", domain: "swiftui")
+                
+                PostService.savePost(Post(userPost: userPost), at: PostService.getPathInDocumentsDirectory(withFileName: "posts"))
                 
                 await MainActor.run {
                     self.postTitle = ""

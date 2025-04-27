@@ -76,8 +76,12 @@ class PostView: UIView {
         domainLabel.text = post.domain
         titleLabel.text = post.title
         postImageView.sd_setImage(with: post.imageURL)
-        ratingLabel.text = "\(post.upvotes - post.downvotes)"
-        commentCountLabel.text = "\(post.commentCount)"
+        
+        //TODO: can it lead to problems??
+        
+        ratingLabel.text = "\(post.upvotes! - post.downvotes!)"
+        commentCountLabel.text = "\(post.commentCount!)"
+        
         if let height = post.imageHeight{
             imageWrapperHeightConstraint.constant = CGFloat(height > 170 ? 170 : height)
             parentCell?.postHeightConstraint.constant = 300

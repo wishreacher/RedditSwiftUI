@@ -9,13 +9,13 @@ import Foundation
 import SwiftUI
 
 class PostListViewModel: ObservableObject {
-    @Published var posts: [UserPost] = []
+    @Published var posts: [Post] = []
     
     @ViewBuilder
-    func makePostRow(_ post: UserPost) -> some View {
+    func makePostRow(_ post: Post) -> some View {
         VStack(alignment: .leading, spacing: 0){
             HStack(spacing: 5){
-                Text(post.author.name)
+                Text(post.author)
                 Text("•")
                 Text("yesterday")
                 Text("•")
@@ -59,6 +59,6 @@ class PostListViewModel: ObservableObject {
     }
     
     func refreshPosts() {
-        self.posts = PostService.loadSavedUserPosts()
+        self.posts = PostService.loadPosts(from: PostService.getPathInDocumentsDirectory(withFileName: "posts"))
     }
 }

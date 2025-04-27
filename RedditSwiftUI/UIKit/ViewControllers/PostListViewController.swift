@@ -39,7 +39,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
         savedPostViewEnabled.toggle()
         
         if savedPostViewEnabled {
-            bookmarkedPosts = PostService.loadBookmarkedPosts(at: saveLocation)
+            bookmarkedPosts = PostService.loadPosts(from: saveLocation)
             searchField.isHidden = false
             searchField.text = ""
             viewState = .displaySaved
@@ -67,16 +67,17 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
     let domain = "ios"
     let postAmount = 10
     var isLoading = false
-    let saveLocation: String = {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths[0].appendingPathComponent("bookmarks.json").path
-    }()
+//    let saveLocation: String = {
+//        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+//        return paths[0].appendingPathComponent("bookmarks.json").path
+//    }()
+    let saveLocation = PostService.getPathInDocumentsDirectory(withFileName: "posts")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         domainName.title = "r/" + domain
-        bookmarkedPosts = PostService.loadBookmarkedPosts(at: saveLocation)
+        bookmarkedPosts = PostService.loadPosts(from: saveLocation)
 
         Task {
             do {
@@ -253,7 +254,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
             }
         }
         
-        PostService.saveBookmarkedPosts(bookmarkedPosts, at: saveLocation)
+        PostService.setSavedPosts(bookmarkedPosts, at: saveLocation)
     }
     
     func markSavedPosts(){

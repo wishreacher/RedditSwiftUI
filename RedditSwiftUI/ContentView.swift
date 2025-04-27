@@ -14,8 +14,12 @@ struct ContentView: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            PostListViewControllerSwiftUI()
-                .tabItem{
+//            PostListViewControllerSwiftUI()
+//                .tabItem{
+//                    Label("Feed", systemImage: "list.bullet")
+//                }
+            PostListView()
+                .tabItem {
                     Label("Feed", systemImage: "list.bullet")
                 }
                 .tag(0)

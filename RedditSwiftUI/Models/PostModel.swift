@@ -7,71 +7,69 @@
 
 import Foundation
 
-struct RedditResponse: Codable {
-    let data: RedditData
+struct User: Codable {
+    let name: String
 }
 
-struct RedditData: Codable {
-    let children: [RedditChild]
-    let after: String?
-}
-
-struct RedditChild: Codable {
-    let data: RedditPost
-}
-
-struct RedditPost: Codable {
-    let id: String
+struct UserPost: Identifiable, Codable {
     let title: String
+    let description: String?
+    let imagePath: String?
     let author: String
-    let created: Double
-    let ups: Int
-    let downs: Int
-    let num_comments: Int
-    let url: String
-    let selftext: String?
-    let thumbnail: String?
-    let preview: Preview?
+    let date: String
     let domain: String
-    let saved: Bool
-    let author_fullname: String
+    
+    var id: String{
+        return title
+    }
 }
 
-struct Preview: Codable {
-    let images: [Image]
-    
-    struct Image: Codable {
-        let source: Source
-        struct Source: Codable {
-            let url: String
-            let height: Int
+enum CreatePostAlert: Identifiable {
+    case missingUsername
+    case incompletePost
+
+    var id: Int {
+        hashValue
+    }
+
+    var message: String {
+        switch self {
+        case .missingUsername:
+            return "You need to set username"
+        case .incompletePost:
+            return "Post must have title, description and image"
         }
     }
 }
 
-struct Post: Codable {
+struct Post: Codable, Identifiable {
     let id: String
     let title: String
     let author: String
     let date: String
-    let upvotes: Int
-    let downvotes: Int
-    let commentCount: Int
-    let url: URL
+    let upvotes: Int?
+    let downvotes: Int?
+    let commentCount: Int?
+    let url: URL?
     let description: String?
     let imageURL: URL?
+    let imagePath: String?
     let domain: String
     var saved: Bool
-    let authorID: String
+    let authorID: String?
     let imageHeight: Int?
+    var isLocal: Bool{
+        return url == nil
+    }
     
-    init(from redditPost: RedditPost) {
+    init(redditPost: RedditPost) {
         self.id = redditPost.id
         self.title = redditPost.title
         self.author = redditPost.author
         self.saved = redditPost.saved
         self.authorID = redditPost.author_fullname
         self.imageHeight = redditPost.preview?.images.first?.source.height
+        self.imagePath = nil
         
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year, .day, .hour, .minute], from: Date(timeIntervalSince1970: redditPost.created), to: Date.now)
@@ -126,6 +124,25 @@ struct Post: Codable {
         }
     }
     
+    init(userPost: UserPost){
+        self.title = userPost.title
+        self.description = userPost.description
+        self.imagePath = userPost.imagePath
+        self.author = userPost.author
+        self.date = userPost.date
+        self.domain = userPost.domain
+        self.id = userPost.id
+        
+        self.upvotes = 69
+        self.imageURL = nil
+        self.commentCount = 69
+        self.url = nil
+        self.downvotes = 0
+        self.saved = true
+        self.authorID = nil
+        self.imageHeight = nil
+    }
+    
     init(){
         id = ""
         title = ""
@@ -134,9 +151,10 @@ struct Post: Codable {
         upvotes = 0
         downvotes = 0
         commentCount = 0
-        url = URL("")!
+        url = nil
         description = ""
         imageURL = nil
+        imagePath = nil
         domain = ""
         saved = false
         authorID = ""

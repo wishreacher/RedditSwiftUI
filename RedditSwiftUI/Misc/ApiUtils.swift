@@ -44,7 +44,7 @@ class ApiUtils{
         var postList: [Post] = []
     
         for child in response.data.children{
-            postList.append(Post(from: child.data))
+            postList.append(Post(redditPost: child.data))
         }
         
         guard let lastPost = postList.last else{
