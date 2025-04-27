@@ -89,9 +89,9 @@ struct PostService {
         return imagePath.path
     }
 
-    static func loadImageFromPath(_ imageName: String) -> UIImage? {
-        let fullPath = getImagePath(for: imageName)
-        return UIImage(contentsOfFile: fullPath)
+    static func loadImageFromPath(_ path: String) -> UIImage? {
+        let url = URL(fileURLWithPath: path)
+        return UIImage(contentsOfFile: url.path)
     }
     
     static func getDocumentsDirectory() -> URL {

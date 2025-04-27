@@ -67,30 +67,51 @@ class PostView: UIView {
     private var url: URL? = nil
     private var isSaved: Bool = false
     private var parentCell: PostTableViewCell?
-    private var withImage: Bool = false
+    private var withImage: Bool = true
     
     func config(with post: Post){
+
         url = post.url
         authorLabel.text = post.author
         timeLabel.text = post.date
         domainLabel.text = post.domain
         titleLabel.text = post.title
-        postImageView.sd_setImage(with: post.imageURL)
+        
+        if (post.imagePath == nil && post.imageURL == nil){
+            withImage = false
+        }
         
         //TODO: can it lead to problems??
-        
         ratingLabel.text = "\(post.upvotes! - post.downvotes!)"
         commentCountLabel.text = "\(post.commentCount!)"
         
         if let height = post.imageHeight{
             imageWrapperHeightConstraint.constant = CGFloat(height > 170 ? 170 : height)
             parentCell?.postHeightConstraint.constant = 300
-            withImage = true
         } else{
             imageWrapperHeightConstraint.constant = 0
             parentCell?.postHeightConstraint.constant = 130
-            withImage = false
         }
+        
+        if(post.isLocal){
+            guard let path = post.imagePath else { return }
+            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let imagePath = documentsDirectory.appendingPathComponent(path).relativePath
+            postImageView.image = PostService.loadImageFromPath(imagePath)
+            print("loading local image from path: \(imagePath)")
+//            postImageView.image = UIImage(resource: .test)
+            
+            imageWrapperHeightConstraint.constant = 170
+            parentCell?.postHeightConstraint.constant = 130
+            
+            
+            postImageView.contentMode = .scaleAspectFit
+            postImageView.clipsToBounds = true
+
+        } else {
+            postImageView.sd_setImage(with: post.imageURL)
+        }
+        
         isSaved = post.saved
         bookmarkButton.setImage(UIImage(systemName: post.saved ? "bookmark.fill" : "bookmark"), for: .normal)
         
@@ -119,7 +140,7 @@ class PostView: UIView {
         imageWrapperHeightConstraint.constant = 0
         isSaved = false
         url = nil
-        withImage = false
+        withImage = true
         
         bookmarkButton.setImage(UIImage(systemName: "bookmark"), for: .normal)
     }
