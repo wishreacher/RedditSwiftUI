@@ -53,4 +53,9 @@ class PostTableViewCellSwiftUI: PostTableViewCell {
         }
         parentViewController?.performSegue(withIdentifier: "go_to_post", sender: nil)
     }
+    
+    override func didDoubleTapOnPost() {
+        parentViewController?.bookmarkPost(in: self)
+        parentViewController?.reloadTable()
+    }
 }

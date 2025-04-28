@@ -66,7 +66,28 @@ struct PostService {
         print("No posts found at \(location)")
         return []
     }
+    
+    static func deletePost(_ post: Post, from location: String) {
+        var posts: [Post] = []
+    
+        if FileManager.default.fileExists(atPath: location) {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: location))
+                posts = try JSONDecoder().decode([Post].self, from: data)
+            } catch {
+                print("Failed to load existing posts from file: \(error)")
+            }
+        }
+        
+        guard (posts.contains(post) == false) else {
+            print("There isn't such a post")
+            return
+        }
+        
+        posts.remove(at: posts.firstIndex(of: post)!)
+    }
 
+    //TODO: REWORK
     static func saveImageToDocumentsDirectory(image: UIImage) -> String? {
         let imageName = UUID().uuidString + ".jpg"
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!

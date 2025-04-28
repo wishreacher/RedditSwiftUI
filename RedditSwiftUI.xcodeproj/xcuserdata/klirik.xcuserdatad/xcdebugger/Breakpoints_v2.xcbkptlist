@@ -78,8 +78,8 @@
             filePath = "RedditSwiftUI/Misc/SaveUtils.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
             landmarkName = "getHeightForImage(at:)"
             landmarkType = "7">
          </BreakpointContent>

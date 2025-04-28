@@ -42,7 +42,7 @@ enum CreatePostAlert: Identifiable {
     }
 }
 
-struct Post: Codable, Identifiable {
+struct Post: Codable, Identifiable, Equatable {
     let id: String
     let title: String
     let author: String
