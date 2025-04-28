@@ -68,16 +68,7 @@ struct PostService {
     }
     
     static func deletePost(_ post: Post, from location: String) {
-        var posts: [Post] = []
-    
-        if FileManager.default.fileExists(atPath: location) {
-            do {
-                let data = try Data(contentsOf: URL(fileURLWithPath: location))
-                posts = try JSONDecoder().decode([Post].self, from: data)
-            } catch {
-                print("Failed to load existing posts from file: \(error)")
-            }
-        }
+        var posts: [Post] = loadPosts(from: location)
         
         guard (posts.contains(post) == false) else {
             print("There isn't such a post")
@@ -85,6 +76,8 @@ struct PostService {
         }
         
         posts.remove(at: posts.firstIndex(of: post)!)
+        
+        setSavedPosts(posts, at: location)
     }
 
     //TODO: REWORK

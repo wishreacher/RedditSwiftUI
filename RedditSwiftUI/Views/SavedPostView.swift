@@ -17,6 +17,10 @@ struct SavedPostView: View {
                 Text(post.date)
                 Text("•")
                 Text(post.domain)
+                Spacer()
+                Image(systemName: "bookmark.fill")
+                    .font(.system(size: 22))
+                    .foregroundStyle(.blue)
             }
             .font(.caption)
             .foregroundColor(.gray)
@@ -24,12 +28,16 @@ struct SavedPostView: View {
             Text(post.title)
                 .font(.title)
             
-            if let imagePath = post.imagePath, let image = PostService.loadImageFromPath(imagePath) {
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 200)
-                    }
+            HStack{
+                Spacer()
+                if let imagePath = post.imagePath, let image = PostService.loadImageFromPath(PostService.getImagePath(for: imagePath)) {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxHeight: 200)
+                        }
+                Spacer()
+            }
             
             HStack{
                 Image(systemName: "arrowshape.up")
@@ -42,7 +50,10 @@ struct SavedPostView: View {
                 Text("Share")
             }
         }
+        .padding(15)
         .background(.orange.opacity(0.5))
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        
     }
 }
 

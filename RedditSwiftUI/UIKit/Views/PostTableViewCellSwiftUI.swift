@@ -12,9 +12,11 @@ import SwiftUI
 
 class PostTableViewCellSwiftUI: PostTableViewCell {
     var hostingViewController: UIViewController = UIViewController()
+    var post: Post = Post()
     
     override func config(with post: Post, _ parent: PostListViewController?){
         super.config(with: post, parent)
+        self.post = post
         parentViewController = parent
         url = post.url
         integrate(post)
@@ -56,6 +58,7 @@ class PostTableViewCellSwiftUI: PostTableViewCell {
     
     override func didDoubleTapOnPost() {
         parentViewController?.bookmarkPost(in: self)
+        PostService.deletePost(post, from: PostService.getPathInDocumentsDirectory(withFileName: "posts"))
         parentViewController?.reloadTable()
     }
 }

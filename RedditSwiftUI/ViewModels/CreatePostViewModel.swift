@@ -41,15 +41,12 @@ class CreatePostViewModel: ObservableObject {
                     }
                     imagePath = PostService.saveImageToDocumentsDirectory(image: postImage!)
                 }
-                
-                //PostService.saveUserPost(title: postTitle, text: postDescription, image: postImage)
-                
-                //TODO: maybe force unwrap is not a good idea. tho this shouldn't happen if user is empty.
-                //also rewise hardcoded values
-                
+            
                 let userPost = UserPost(title: postTitle, description: postDescription, imagePath: imagePath, author: user!.name, date: "1745766630", domain: "swiftui")
                 
                 PostService.savePost(Post(userPost: userPost), at: PostService.getPathInDocumentsDirectory(withFileName: "posts"))
+                
+                print("User post saved in \(PostService.getPathInDocumentsDirectory(withFileName: "posts"))")
                 
                 await MainActor.run {
                     self.postTitle = ""
