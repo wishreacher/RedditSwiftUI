@@ -96,6 +96,8 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
                 view.addGestureRecognizer(tapGesture)
+        
+        tableView.register(PostTableViewCellSwiftUI.self, forCellReuseIdentifier: "SwiftUICell")
     }
     
     @objc
@@ -121,17 +123,26 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! PostTableViewCell
+        var cell: PostTableViewCell
+        
+        let neededPostList: [Post]
         
         switch viewState{
             case .normal:
-                cell.config(with: postList[indexPath.row], self)
+                neededPostList = postList
             case .displaySaved:
-                cell.config(with: bookmarkedPosts[indexPath.row], self)
+                neededPostList = bookmarkedPosts
             case .filtered:
-                cell.config(with: bookmarkedPosts.filter({$0.title.contains(searchField.text ?? "")})[indexPath.row], self)
+                neededPostList = bookmarkedPosts.filter({$0.title.contains(searchField.text ?? "")})
         }
         
+        if neededPostList[indexPath.row].isLocal {
+            cell = tableView.dequeueReusableCell(withIdentifier: "SwiftUICell", for: indexPath) as! PostTableViewCellSwiftUI
+        } else {
+            cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! PostTableViewCellUIKit
+        }
+        print(indexPath.row)
+        cell.config(with: neededPostList[indexPath.row], self)
         return cell
     }
     

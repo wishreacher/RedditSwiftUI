@@ -66,7 +66,7 @@ class PostView: UIView {
     
     private var url: URL? = nil
     private var isSaved: Bool = false
-    private var parentCell: PostTableViewCell?
+    private var parentCell: PostTableViewCellUIKit?
     private var withImage: Bool = true
     
     func config(with post: Post){
@@ -81,8 +81,8 @@ class PostView: UIView {
         }
         
         //TODO: can it lead to problems??
-        ratingLabel.text = "\(post.upvotes! - post.downvotes!)"
-        commentCountLabel.text = "\(post.commentCount!)"
+        ratingLabel.text = "\((post.upvotes ?? 0) - (post.downvotes ?? 0))"
+        commentCountLabel.text = "\(post.commentCount ?? 0)"
         
         if let height = post.imageHeight{
             imageWrapperHeightConstraint.constant = CGFloat(height > 170 ? 170 : height)
@@ -114,7 +114,7 @@ class PostView: UIView {
         bookmarkButton.addGestureRecognizer(bookmarkTapRecognizer)
     }
     
-    func config(with post: Post, parentCell: PostTableViewCell?){
+    func config(with post: Post, parentCell: PostTableViewCellUIKit?){
         config(with: post)
         self.parentCell = parentCell
     }
