@@ -57,7 +57,7 @@ struct SavedPostView: View {
             }
         }
         .padding(15)
-        .background(.orange.opacity(0.5))
+        .background(.purple.opacity(0.5))
         .clipShape(RoundedRectangle(cornerRadius: 10))
         
     }
