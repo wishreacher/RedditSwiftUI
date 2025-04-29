@@ -1,10 +1,3 @@
-//
-//  PostView.swift
-//  RedditSwiftUI
-//
-//  Created by Володимир on 27.04.2025.
-//
-
 import SwiftUI
 
 struct SavedPostView: View {
@@ -39,15 +32,18 @@ struct SavedPostView: View {
                 Spacer()
             }
             
-            HStack{
-                Image(systemName: "arrowshape.up")
-                Text("456")
+            HStack (spacing: 15) {
+                HStack (spacing: 3) {
+                    Image(systemName: "arrowshape.up")
+                    Text("456")
+                }
+                
+                HStack (spacing: 3) {
+                    Image(systemName: "message")
+                    Text("123")
+                }
+                
                 Spacer()
-                Image(systemName: "message")
-                Text("123")
-                Spacer()
-                Image(systemName: "square.and.arrow.up")
-                Text("Share")
             }
         }
         .padding(15)

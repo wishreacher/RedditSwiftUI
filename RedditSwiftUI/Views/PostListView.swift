@@ -1,10 +1,3 @@
-//
-//  PostListView.swift
-//  RedditSwiftUI
-//
-//  Created by Володимир on 13.04.2025.
-//
-
 import SwiftUI
 
 struct PostListView: View {

@@ -1,10 +1,3 @@
-//
-//  PostModel.swift
-//  Reddit
-//
-//  Created by Володимир on 10.03.2025.
-//
-
 import Foundation
 
 struct User: Codable {

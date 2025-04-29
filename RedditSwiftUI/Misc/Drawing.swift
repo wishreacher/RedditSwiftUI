@@ -1,10 +1,3 @@
-//
-//  Drawing.swift
-//  RedditSwiftUI
-//
-//  Created by Володимир on 28.04.2025.
-//
-
 import Foundation
 import UIKit
 

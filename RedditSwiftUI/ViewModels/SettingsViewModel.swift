@@ -1,10 +1,3 @@
-//
-//  SettingsViewModel.swift
-//  RedditSwiftUI
-//
-//  Created by Володимир on 13.04.2025.
-//
-
 import Foundation
 import SwiftUI
 

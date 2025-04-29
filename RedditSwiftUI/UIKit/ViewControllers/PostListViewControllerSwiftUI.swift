@@ -1,10 +1,3 @@
-//
-//  PostListViewControllerSwiftUI.swift
-//  RedditSwiftUI
-//
-//  Created by Володимир on 24.04.2025.
-//
-
 import Foundation
 import SwiftUI
 

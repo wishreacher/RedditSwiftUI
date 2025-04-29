@@ -1,10 +1,3 @@
-//
-//  ViewController.swift
-//  Reddit
-//
-//  Created by Володимир on 07.03.2025.
-//
-
 import UIKit
 import SDWebImage
 

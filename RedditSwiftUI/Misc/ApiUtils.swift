@@ -1,10 +1,3 @@
-//
-//  ApiUtils.swift
-//  Reddit
-//
-//  Created by Володимир on 17.03.2025.
-//
-
 import Foundation
 
 enum RedditError: Error{

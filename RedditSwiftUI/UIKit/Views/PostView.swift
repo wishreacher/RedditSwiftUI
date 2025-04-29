@@ -1,10 +1,3 @@
-//
-//  Post.swift
-//  Reddit
-//
-//  Created by Володимир on 31.03.2025.
-//
-
 import UIKit
 
 class PostView: UIView {
