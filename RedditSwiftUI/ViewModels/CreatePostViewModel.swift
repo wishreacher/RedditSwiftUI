@@ -43,6 +43,10 @@ class CreatePostViewModel: ObservableObject {
                 let userPost = UserPost(title: postTitle, description: postDescription, imagePath: imagePath, author: user!.name, date: "1745766630", domain: "swiftui")
                 
                 SaveService.savePostToDocumentsDirectory(Post(userPost: userPost), at: "posts")
+                NotificationCenter.default.post(
+                                name: Notification.Name("reloadTable"),
+                                object: nil
+                            )
                 
                 await MainActor.run {
                     self.postTitle = ""

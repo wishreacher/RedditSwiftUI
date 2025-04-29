@@ -22,6 +22,21 @@ struct SaveService {
         setSavedPosts(posts, at: getPathInDocumentsDirectory(withFileName: location))
     }
     
+    static func deletePostFromDocumentsDirectory(_ post: Post, from location: String) {
+        var posts: [Post] = []
+        let path = getPathInDocumentsDirectory(withFileName: location)
+        
+        posts = loadPosts(from: path)
+        
+        if posts.contains(post) {
+            if let index = posts.firstIndex(of: post) {
+                posts.remove(at: index)
+            }
+        }
+        
+        setSavedPosts(posts, at: path)
+    }
+    
     private static func savePost(_ post: Post, at location: String) {
         var posts: [Post] = []
         

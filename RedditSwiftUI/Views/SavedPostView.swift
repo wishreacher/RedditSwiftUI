@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SavedPostView: View {
     let post: Post
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0){
             HStack(spacing: 5){
@@ -11,9 +12,18 @@ struct SavedPostView: View {
                 Text("•")
                 Text(post.domain)
                 Spacer()
-                Image(systemName: "bookmark.fill")
-                    .font(.system(size: 22))
-                    .foregroundStyle(.blue)
+                Button(action: {
+                    SaveService.deletePostFromDocumentsDirectory(post, from: "posts")
+                    NotificationCenter.default.post(
+                                    name: Notification.Name("reloadTable"),
+                                    object: nil
+                                )
+                }){
+                    Image(systemName: "bookmark.fill")
+                        .font(.system(size: 22))
+                        .foregroundStyle(.blue)
+                }
+                
             }
             .font(.caption)
             .foregroundColor(.gray)

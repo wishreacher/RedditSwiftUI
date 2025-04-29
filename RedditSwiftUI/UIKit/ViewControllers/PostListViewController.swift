@@ -62,6 +62,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
     let postAmount = 10
     var isLoading = false
     let saveLocation = "posts"
+    private var notificationObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,6 +95,14 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
                 view.addGestureRecognizer(tapGesture)
         
         tableView.register(PostTableViewCellSwiftUI.self, forCellReuseIdentifier: "SwiftUICell")
+        
+        notificationObserver = NotificationCenter.default.addObserver(
+                    forName: Notification.Name("reloadTable"),
+                    object: nil,
+                    queue: .main) {_ in
+                        self.bookmarkedPosts = SaveService.loadPostsFromDocuments(from: self.saveLocation)
+                        self.reloadTable()
+                    }
     }
     
     @objc
