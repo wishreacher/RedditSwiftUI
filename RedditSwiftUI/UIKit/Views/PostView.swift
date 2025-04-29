@@ -128,6 +128,9 @@ class PostView: UIView {
     func didTapBookmarkButton(){
         guard let parentCell else { return }
         parentCell.parentViewController?.bookmarkPost(in: parentCell)
+        //MARK: -
         parentCell.parentViewController?.reloadTable()
+        isSaved.toggle()
+        bookmarkButton.setImage(UIImage(systemName: (isSaved ? "bookmark.fill" : "bookmark")), for: .normal)
     }
 }
