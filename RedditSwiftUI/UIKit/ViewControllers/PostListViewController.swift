@@ -57,6 +57,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
     var viewState: PostListViewState = .normal
     var lastLoadedPost: String?
     var selectedPost: Post?
+    var selectedCell: PostTableViewCell?
     let domain = "ios"
     let postAmount = 10
     var isLoading = false
@@ -145,9 +146,10 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
         switch segue.identifier{
         case "go_to_post":
             let nextVC = segue.destination as! PostDetailsViewController
-            DispatchQueue.main.async{
-                nextVC.config(self.selectedPost ?? Post())
-            }
+//            DispatchQueue.main.async{ [weak self] in
+//                guard let self else { return }
+                nextVC.config(self.selectedPost ?? Post(), parentCell: self.selectedCell)
+//            }
         default:
             print("Unknown segue")
         }
@@ -157,10 +159,13 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
         switch viewState{
         case .normal:
             self.selectedPost = self.postList[indexPath.row]
+            self.selectedCell = tableView.cellForRow(at: indexPath) as! PostTableViewCell
         case .displaySaved:
             self.selectedPost = self.bookmarkedPosts[indexPath.row]
+            self.selectedCell = tableView.cellForRow(at: indexPath) as! PostTableViewCell
         case .filtered:
             self.selectedPost = self.bookmarkedPosts.filter({$0.title.contains(searchField.text ?? "")})[indexPath.row]
+            self.selectedCell = tableView.cellForRow(at: indexPath) as! PostTableViewCell
         }
     }
     

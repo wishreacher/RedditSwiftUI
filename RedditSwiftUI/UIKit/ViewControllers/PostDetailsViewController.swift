@@ -6,19 +6,21 @@ class PostDetailsViewController: UIViewController {
     @IBOutlet weak var postView: PostView!
     
     private var post: Post?
+    private var parentCell: PostTableViewCell?
 
-    func config(_ post: Post) {
+    func config(_ post: Post, parentCell: PostTableViewCell?) {
         self.post = post
-        if isViewLoaded {
-            postView.config(with: post)
-        }
+        self.parentCell = parentCell
+//        if isViewLoaded {
+//            postView.config(with: post, parentCell: parentCell)
+//        }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let post = post {
-            postView.config(with: post)
+            postView.config(with: post, parentCell: parentCell)
         }
     }
 }

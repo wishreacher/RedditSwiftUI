@@ -33,9 +33,21 @@ class PostView: UIView {
     @IBOutlet private weak var imageWrapperHeightConstraint: NSLayoutConstraint!
     
     //MARK: - Other variables
+    lazy var bookmarkTapRecognizer: UITapGestureRecognizer = {
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapBookmarkButton))
+        tapRecognizer.numberOfTapsRequired = 1
+        return tapRecognizer
+    }()
+    
+    lazy var shareTapRecognizer: UITapGestureRecognizer = {
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapShareButton))
+        tapRecognizer.numberOfTapsRequired = 1
+        return tapRecognizer
+    }()
+    
     private var url: URL? = nil
     private var isSaved: Bool = false
-    private var parentCell: PostTableViewCellUIKit?
+    private var parentCell: PostTableViewCell?
     private var withImage: Bool = true
     
     func config(with post: Post){
@@ -54,21 +66,22 @@ class PostView: UIView {
         
         if let height = post.imageHeight{
             imageWrapperHeightConstraint.constant = CGFloat(height > 170 ? 170 : height)
-            parentCell?.postHeightConstraint.constant = 300
+            (parentCell as? PostTableViewCellUIKit)?.postHeightConstraint.constant = 300
         } else{
             imageWrapperHeightConstraint.constant = 0
-            parentCell?.postHeightConstraint.constant = 130
+            (parentCell as? PostTableViewCellUIKit)?.postHeightConstraint.constant = 130
         }
         
         if(post.isLocal){
-            guard let path = post.imagePath else { return }
-            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            let imagePath = documentsDirectory.appendingPathComponent(path).relativePath
-            postImageView.image = SaveService.loadImageFromPath(imagePath)
-            print("loading local image from path: \(imagePath)")
+            if post.imagePath != nil {
+                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                let imagePath = documentsDirectory.appendingPathComponent(post.imagePath!).relativePath
+                postImageView.image = SaveService.loadImageFromPath(imagePath)
+                print("loading local image from path: \(imagePath)")
 
-            imageWrapperHeightConstraint.constant = 150
-            parentCell?.postHeightConstraint.constant = 300
+                imageWrapperHeightConstraint.constant = 150
+                (parentCell as? PostTableViewCellUIKit)?.postHeightConstraint.constant = 300
+            }
         } else {
             postImageView.sd_setImage(with: post.imageURL)
         }
@@ -76,17 +89,17 @@ class PostView: UIView {
         isSaved = post.saved
         bookmarkButton.setImage(UIImage(systemName: post.saved ? "bookmark.fill" : "bookmark"), for: .normal)
         
-        guard let parentCell = parentCell else { return }
-        shareStackView.addGestureRecognizer(parentCell.shareTapRecognizer)
-        bookmarkButton.addGestureRecognizer(parentCell.bookmarkTapRecognizer)
+        shareStackView.addGestureRecognizer(shareTapRecognizer)
+        bookmarkButton.addGestureRecognizer(bookmarkTapRecognizer)
     }
     
-    func config(with post: Post, parentCell: PostTableViewCellUIKit?){
+    func config(with post: Post, parentCell: PostTableViewCell?){
         config(with: post)
         self.parentCell = parentCell
     }
     
     func reuse(){
+        parentCell = nil
         postImageView.image = nil
         postImageView.sd_cancelCurrentImageLoad()
         bookmarkReactionView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
@@ -103,5 +116,18 @@ class PostView: UIView {
         withImage = true
         
         bookmarkButton.setImage(UIImage(systemName: "bookmark"), for: .normal)
+    }
+    
+    @objc
+    func didTapShareButton(){
+        let avc = UIActivityViewController(activityItems: ["\(titleLabel.text): \(String(describing: self.url))"], applicationActivities: nil)
+        parentCell?.parentViewController?.present(avc, animated: true)
+    }
+    
+    @objc
+    func didTapBookmarkButton(){
+        guard let parentCell else { return }
+        parentCell.parentViewController?.bookmarkPost(in: parentCell)
+        parentCell.parentViewController?.reloadTable()
     }
 }

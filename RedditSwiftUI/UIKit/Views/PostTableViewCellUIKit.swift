@@ -6,18 +6,6 @@ class PostTableViewCellUIKit: PostTableViewCell {
     @IBOutlet internal weak var postView: PostView!
     @IBOutlet weak var postHeightConstraint: NSLayoutConstraint!
     
-    lazy var bookmarkTapRecognizer: UITapGestureRecognizer = {
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapBookmarkButton))
-        tapRecognizer.numberOfTapsRequired = 1
-        return tapRecognizer
-    }()
-    
-    lazy var shareTapRecognizer: UITapGestureRecognizer = {
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapShareButton))
-        tapRecognizer.numberOfTapsRequired = 1
-        return tapRecognizer
-    }()
-    
     override func config(with post: Post, _ parent: PostListViewController?){
         super.config(with: post, parent)
         parentViewController = parent
@@ -58,17 +46,5 @@ class PostTableViewCellUIKit: PostTableViewCell {
             self.parentViewController?.reloadTable()
             view.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         }
-    }
-    
-    @objc
-    func didTapShareButton(){
-        let avc = UIActivityViewController(activityItems: ["\(postView.titleLabel.text): \(String(describing: self.url))"], applicationActivities: nil)
-        parentViewController?.present(avc, animated: true)
-    }
-    
-    @objc
-    func didTapBookmarkButton(){
-        parentViewController?.bookmarkPost(in: self)
-        parentViewController?.reloadTable()
     }
 }
