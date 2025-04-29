@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-struct PostService {
+struct SaveService {
     static func loadUser() -> User? {
         guard let data = UserDefaults.standard.data(forKey: "savedUser"),
               let user = try? JSONDecoder().decode(User.self, from: data) else {
@@ -10,10 +10,21 @@ struct PostService {
         return user
     }
     
-    static func savePost(_ post: Post, at location: String) {
+    static func loadPostsFromDocuments(from location: String) -> [Post] {
+        loadPosts(from: getPathInDocumentsDirectory(withFileName: location))
+    }
+    
+    static func savePostToDocumentsDirectory(_ post: Post, at location: String) {
+        savePost(post, at: getPathInDocumentsDirectory(withFileName: location))
+    }
+    
+    static func setPostsInDocumentsDirectory(_ posts: [Post], at location: String) {
+        setSavedPosts(posts, at: getPathInDocumentsDirectory(withFileName: location))
+    }
+    
+    private static func savePost(_ post: Post, at location: String) {
         var posts: [Post] = []
         
-        //pull existing posts if they exist
         if FileManager.default.fileExists(atPath: location) {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: location))
@@ -38,7 +49,7 @@ struct PostService {
         }
     }
     
-    static func setSavedPosts(_ posts: [Post], at location: String) {
+    private static func setSavedPosts(_ posts: [Post], at location: String) {
         do {
             let encodedData = try JSONEncoder().encode(posts)
             
@@ -53,7 +64,7 @@ struct PostService {
         }
     }
     
-    static func loadPosts(from location: String) -> [Post] {
+    private static func loadPosts(from location: String) -> [Post] {
         if FileManager.default.fileExists(atPath: location) {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: location))
@@ -67,20 +78,6 @@ struct PostService {
         return []
     }
     
-    static func deletePost(_ post: Post, from location: String) {
-        var posts: [Post] = loadPosts(from: location)
-        
-        guard (posts.contains(post) == false) else {
-            print("There isn't such a post")
-            return
-        }
-        
-        posts.remove(at: posts.firstIndex(of: post)!)
-        
-        setSavedPosts(posts, at: location)
-    }
-
-    //TODO: REWORK
     static func saveImageToDocumentsDirectory(image: UIImage) -> String? {
         let imageName = UUID().uuidString + ".jpg"
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -96,27 +93,13 @@ struct PostService {
             return nil
         }
     }
-
-    static func getImagePath(for filename: String) -> String {
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let imagePath = documentsDirectory.appendingPathComponent(filename)
-        return imagePath.path
-    }
-
+    
     static func loadImageFromPath(_ path: String) -> UIImage? {
         let url = URL(fileURLWithPath: path)
         return UIImage(contentsOfFile: url.path)
     }
     
-    static func getDocumentsDirectory() -> URL {
-        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    }
-    
     static func getPathInDocumentsDirectory(withFileName fileName: String) -> String {
-        return getDocumentsDirectory().appendingPathComponent(fileName).path()
-    }
-    
-    static func getHeightForImage(at path: String) -> Double {
-        return Double(loadImageFromPath(getImagePath(for: path))?.size.hashValue ?? 0)
+        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(fileName).path()
     }
 }

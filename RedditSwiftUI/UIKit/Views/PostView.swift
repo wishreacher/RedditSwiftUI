@@ -64,7 +64,7 @@ class PostView: UIView {
             guard let path = post.imagePath else { return }
             let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
             let imagePath = documentsDirectory.appendingPathComponent(path).relativePath
-            postImageView.image = PostService.loadImageFromPath(imagePath)
+            postImageView.image = SaveService.loadImageFromPath(imagePath)
             print("loading local image from path: \(imagePath)")
 
             imageWrapperHeightConstraint.constant = 150
@@ -76,12 +76,9 @@ class PostView: UIView {
         isSaved = post.saved
         bookmarkButton.setImage(UIImage(systemName: post.saved ? "bookmark.fill" : "bookmark"), for: .normal)
         
-        
-        //TODO: ??
-        if parentCell != nil {
-            shareStackView.addGestureRecognizer(parentCell!.shareTapRecognizer)
-            bookmarkButton.addGestureRecognizer(parentCell!.bookmarkTapRecognizer)
-        }
+        guard let parentCell = parentCell else { return }
+        shareStackView.addGestureRecognizer(parentCell.shareTapRecognizer)
+        bookmarkButton.addGestureRecognizer(parentCell.bookmarkTapRecognizer)
     }
     
     func config(with post: Post, parentCell: PostTableViewCellUIKit?){

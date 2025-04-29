@@ -30,7 +30,7 @@ enum CreatePostAlert: Identifiable {
         case .missingUsername:
             return "You need to set username"
         case .incompletePost:
-            return "Post must have title, description and image"
+            return "Post must have title and description"
         }
     }
 }
@@ -49,7 +49,6 @@ struct Post: Codable, Identifiable, Equatable {
     let imagePath: String?
     let domain: String
     var saved: Bool
-    let authorID: String?
     var imageHeight: Int?
     var isLocal: Bool{
         return url == nil
@@ -60,7 +59,6 @@ struct Post: Codable, Identifiable, Equatable {
         self.title = redditPost.title
         self.author = redditPost.author
         self.saved = redditPost.saved
-        self.authorID = redditPost.author_fullname
         self.imageHeight = redditPost.preview?.images.first?.source.height
         self.imagePath = nil
         
@@ -132,7 +130,6 @@ struct Post: Codable, Identifiable, Equatable {
         self.url = nil
         self.downvotes = 0
         self.saved = true
-        self.authorID = nil
         self.imageHeight = nil
     }
     
@@ -150,7 +147,6 @@ struct Post: Codable, Identifiable, Equatable {
         imagePath = nil
         domain = ""
         saved = false
-        authorID = ""
         imageHeight = 0
     }
     

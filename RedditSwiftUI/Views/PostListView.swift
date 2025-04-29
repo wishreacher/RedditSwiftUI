@@ -7,7 +7,7 @@ struct PostListView: View {
         ScrollView {
             LazyVStack(spacing: 20) {
                 ForEach(vm.posts, id: \.id) { post in
-                    vm.makePostRow(post)
+                    SavedPostView(post: post)
                         .frame(maxHeight: 300)
                 }
             }

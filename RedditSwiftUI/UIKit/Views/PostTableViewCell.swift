@@ -65,5 +65,4 @@ class PostTableViewCell: UITableViewCell {
     func onBookmarkDisappear(view: UIView){
 
     }
-    
 }

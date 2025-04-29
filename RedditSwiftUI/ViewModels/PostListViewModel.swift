@@ -5,11 +5,6 @@ class PostListViewModel: ObservableObject {
     @Published var posts: [Post] = []
     
     @ViewBuilder
-    func makePostRow(_ post: Post) -> some View {
-        
-    }
-    
-    @ViewBuilder
     func loadImage(post: UserPost) -> some View {
         if let imagePath = post.imagePath,
            let uiImage = UIImage(contentsOfFile: imagePath) {
@@ -20,6 +15,6 @@ class PostListViewModel: ObservableObject {
     }
     
     func refreshPosts() {
-        self.posts = PostService.loadPosts(from: PostService.getPathInDocumentsDirectory(withFileName: "posts"))
+        self.posts = SaveService.loadPostsFromDocuments(from: "posts")
     }
 }

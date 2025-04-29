@@ -47,4 +47,3 @@ class ApiUtils{
         return (postList, "t3_\(lastPost.id)")
     }
 }
-    

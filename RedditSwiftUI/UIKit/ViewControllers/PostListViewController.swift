@@ -32,7 +32,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
         savedPostViewEnabled.toggle()
         
         if savedPostViewEnabled {
-            bookmarkedPosts = PostService.loadPosts(from: saveLocation)
+            bookmarkedPosts = SaveService.loadPostsFromDocuments(from: saveLocation)
             searchField.isHidden = false
             searchField.text = ""
             viewState = .displaySaved
@@ -60,17 +60,19 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
     let domain = "ios"
     let postAmount = 10
     var isLoading = false
-    let saveLocation = PostService.getPathInDocumentsDirectory(withFileName: "posts")
+    let saveLocation = "posts"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         domainName.title = "r/" + domain
-        bookmarkedPosts = PostService.loadPosts(from: saveLocation)
+        bookmarkedPosts = SaveService.loadPostsFromDocuments(from: saveLocation)
 
-        Task {
+        Task { @MainActor [weak self] in
+            guard let self = self else { return }
+            
             do {
-                let posts = try await ApiUtils.fetchPosts(domain, limit: postAmount)
+                let posts = try await ApiUtils.fetchPosts(self.domain, limit: self.postAmount)
                 
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
@@ -211,9 +213,11 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
     private func loadMorePosts() {
         isLoading = true
         
-        Task {
+        Task { @MainActor [weak self] in
+            guard let self = self else { return }
+            
             do {
-                let posts = try await ApiUtils.fetchPosts(domain, limit: postAmount, after: lastLoadedPost)
+                let posts = try await ApiUtils.fetchPosts(self.domain, limit: self.postAmount, after: self.lastLoadedPost)
                 
                 guard !posts.0.isEmpty else {
                     isLoading = false
@@ -258,7 +262,7 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
             }
         }
         
-        PostService.setSavedPosts(bookmarkedPosts, at: saveLocation)
+        SaveService.setPostsInDocumentsDirectory(bookmarkedPosts, at: saveLocation)
     }
     
     func markSavedPosts(){
@@ -274,7 +278,6 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
     }
 }
 
-//AI written, i don't understand why it works
 extension PostListViewController{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         searchFieldEditingEnded(textField)

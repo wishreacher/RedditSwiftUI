@@ -28,7 +28,7 @@ struct CreatePostView: View {
             publishButton()
         }
         .onAppear {
-            vm.user = PostService.loadUser()
+            vm.user = SaveService.loadUser()
         }
         .padding(.horizontal, 40)
         .onChange(of: vm.selectedPhotoItem) { newItem in

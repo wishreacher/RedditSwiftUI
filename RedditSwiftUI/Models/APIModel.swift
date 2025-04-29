@@ -27,7 +27,6 @@ struct RedditPost: Codable {
     let preview: Preview?
     let domain: String
     let saved: Bool
-    let author_fullname: String
 }
 
 struct Preview: Codable {

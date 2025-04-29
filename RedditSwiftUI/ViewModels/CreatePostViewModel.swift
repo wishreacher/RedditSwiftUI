@@ -23,7 +23,12 @@ class CreatePostViewModel: ObservableObject {
         }
 
         if canPost() {
-            Task {
+            Task { @MainActor [weak self] in
+                guard let self else {
+                    print ("Self is nil")
+                    return
+                }
+                
                 var postImage: UIImage? = nil
                 var imagePath: String? = nil
                 
@@ -32,14 +37,12 @@ class CreatePostViewModel: ObservableObject {
                        let uiImage = UIImage(data: data) {
                         postImage = uiImage
                     }
-                    imagePath = PostService.saveImageToDocumentsDirectory(image: postImage!)
+                    imagePath = SaveService.saveImageToDocumentsDirectory(image: postImage!)
                 }
             
                 let userPost = UserPost(title: postTitle, description: postDescription, imagePath: imagePath, author: user!.name, date: "1745766630", domain: "swiftui")
                 
-                PostService.savePost(Post(userPost: userPost), at: PostService.getPathInDocumentsDirectory(withFileName: "posts"))
-                
-                print("User post saved in \(PostService.getPathInDocumentsDirectory(withFileName: "posts"))")
+                SaveService.savePostToDocumentsDirectory(Post(userPost: userPost), at: "posts")
                 
                 await MainActor.run {
                     self.postTitle = ""

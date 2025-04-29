@@ -51,7 +51,6 @@ class PostTableViewCellSwiftUI: PostTableViewCell {
     
     override func didDoubleTapOnPost() {
         parentViewController?.bookmarkPost(in: self)
-        PostService.deletePost(post, from: PostService.getPathInDocumentsDirectory(withFileName: "posts"))
         parentViewController?.reloadTable()
     }
 }

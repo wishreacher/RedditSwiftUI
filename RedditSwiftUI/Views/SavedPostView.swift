@@ -23,7 +23,7 @@ struct SavedPostView: View {
             
             HStack{
                 Spacer()
-                if let imagePath = post.imagePath, let image = PostService.loadImageFromPath(PostService.getImagePath(for: imagePath)) {
+                if let imagePath = post.imagePath, let image = SaveService.loadImageFromPath(SaveService.getPathInDocumentsDirectory(withFileName: imagePath)) {
                             Image(uiImage: image)
                                 .resizable()
                                 .scaledToFit()
