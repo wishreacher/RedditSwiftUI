@@ -77,7 +77,6 @@ class PostView: UIView {
                 let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
                 let imagePath = documentsDirectory.appendingPathComponent(post.imagePath!).relativePath
                 postImageView.image = SaveService.loadImageFromPath(imagePath)
-                print("loading local image from path: \(imagePath)")
 
                 imageWrapperHeightConstraint.constant = 150
                 (parentCell as? PostTableViewCellUIKit)?.postHeightConstraint.constant = 300

@@ -137,7 +137,6 @@ class PostListViewController: UITableViewController, UITextFieldDelegate{
         } else {
             cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! PostTableViewCellUIKit
         }
-        print(indexPath.row)
         cell.config(with: neededPostList[indexPath.row], self)
         return cell
     }
